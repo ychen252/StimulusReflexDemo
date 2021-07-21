@@ -8,7 +8,9 @@ class PostsController < ApplicationController
 
   def create
     post = Post.create(post_params)
-    cable_ready["timeline"].insert_adjacent_html(
+    post.username = current_user.email
+    post.save
+    cable_ready["timeline:#{current_user.group}"].insert_adjacent_html(
       selector: "#timeline",
       position: "afterbegin",
       html: render_to_string(partial: "post", locals: {post: post})
@@ -19,6 +21,6 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:body)
+    params.require(:post).permit(:body, :username)
   end
 end

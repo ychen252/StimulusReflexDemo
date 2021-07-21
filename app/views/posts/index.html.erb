@@ -1,6 +1,9 @@
 <div class="container">
   <h1>StimulusReflex Demo</h1>
-
+  <% if user_signed_in? %>
+    <span>Welcome, <%= current_user.email %></span> <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
+    <div>Group: <%= current_user.group %></div>
+  <% end %>
   <%= render "form" %>
 
   <div id="timeline">
